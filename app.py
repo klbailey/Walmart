@@ -4,15 +4,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
+import os
 
-print(joblib.__version__)
+# Define the path to your model and data files
+model_path = 'gradient_boosting_model_80_20.pkl'
+data_path = 'predictions_with_actuals.csv'
+
+# Print joblib version
+st.write(f"Joblib version: {joblib.__version__}")
+
 # Load the model using joblib
-
 try:
-    model = joblib.load('C:/Users/klbai/OneDrive/Desktop/Capstone/WalmartFinal2/gradient_boosting_model_80_20.pkl')
-    print("Model loaded successfully.")
+    model = joblib.load(model_path)
+    st.write("Model loaded successfully.")
 except Exception as e:
-    print(f"Error loading model: {e}")
+    st.error(f"Error loading model: {e}")
+    st.stop()
 
 # Verify model type
 if not hasattr(model, 'predict'):
@@ -77,7 +84,13 @@ except Exception as e:
 
 # Plot historical sales data
 st.header('Original Actual vs. Predicted Plot')
-historical_data = pd.read_csv('C:/Users/klbai/OneDrive/Desktop/Capstone/WalmartFinal2/predictions_with_actuals.csv')
+
+# Load historical data
+try:
+    historical_data = pd.read_csv(data_path)
+except Exception as e:
+    st.error(f"Error loading historical data: {e}")
+    st.stop()
 
 # Aggregate historical sales data by store
 store_agg = historical_data.groupby('Store').agg({
@@ -105,4 +118,3 @@ ax.grid(True)
 plt.tight_layout()
 
 st.pyplot(fig)
-
