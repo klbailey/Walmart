@@ -5,8 +5,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
+print(joblib.__version__)
 # Load the model using joblib
-model = joblib.load('C:/Users/klbai/OneDrive/Desktop/Capstone/WalmartFinal2/gradient_boosting_model_80_20.pkl')
+
+try:
+    model = joblib.load('C:/Users/klbai/OneDrive/Desktop/Capstone/WalmartFinal2/gradient_boosting_model_80_20.pkl')
+    print("Model loaded successfully.")
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 # Verify model type
 if not hasattr(model, 'predict'):
